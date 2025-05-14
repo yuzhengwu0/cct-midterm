@@ -4,6 +4,9 @@ import numpy as np
 import pymc as pm
 import aesara.tensor as at
 import arviz as az
+import matplotlib.pyplot as plt
+import arviz as az
+
 
 def load_data(filepath='data/plant_knowledge.csv'):
     df = pd.read_csv(filepath)
@@ -57,3 +60,15 @@ majority_vote = (X.mean(axis=0) > 0.5).astype(int)
 print("\nConsensus answers from model:\n", Z_consensus)
 print("\nMajority vote answers:\n", majority_vote)
 print("\nDifference (1 = different):\n", Z_consensus != majority_vote)
+
+# Plot competence (D)
+az.plot_posterior(trace, var_names=["D"])
+plt.tight_layout()
+plt.savefig("code/competence_posterior.png")  # 保存图片到 code 文件夹
+plt.close()
+
+# Plot consensus answers (Z)
+az.plot_posterior(trace, var_names=["Z"])
+plt.tight_layout()
+plt.savefig("code/consensus_posterior.png")  # 保存图片
+plt.close()
